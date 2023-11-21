@@ -1,0 +1,21 @@
+#Instructions to install Nequip
+#Check this Jupyter notebook for more details:
+https://colab.research.google.com/drive/1_r348f6oIyKxH4FnpKeD8g4QjwDhP8mT?usp=sharing
+
+#install nequip
+1. git clone --depth 1 "https://github.com/mir-group/nequip.git"
+2. pip install nequip
+
+#install lammps
+1. wget "https://github.com/lammps/lammps/archive/stable.zip"
+2. unzip -q stable.zip
+3. rm stable.zip
+4. mv lammps-stable lammps
+5. wget "https://github.com/mir-group/pair_nequip/archive/main.zip"
+6. unzip -q main.zip
+7. rm main.zip
+8. mv pair_nequip-main pair_nequip
+9. cd pair_nequip && ./patch_lammps.sh ../lammps
+10. pip install mkl mkl-include
+11. cd lammps && mkdir -p build && cd build && cmake ../cmake -DCMAKE_PREFIX_PATH=`python -c 'import torch;print(torch.utils.cmake_prefix_path)'` && make -j4
+
