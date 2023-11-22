@@ -1,21 +1,36 @@
-#Instructions to install Nequip
-#Check this Jupyter notebook for more details:
-https://colab.research.google.com/drive/1_r348f6oIyKxH4FnpKeD8g4QjwDhP8mT?usp=sharing
+This file contains instructions to install and run a modified version of Nequip which uses multiple models (broken apart from a single model) to calculate the energy
 
-#install nequip
+
+#Instructions to install Nequip
+
+Step 1: Install pytorch
+1. conda install pytorch=1.12.1 torchvision -c pytorch  (nequip requires specific Pytorch versions)
+
+Step 2: Install nequip
 1. git clone --depth 1 "https://github.com/mir-group/nequip.git"
 2. pip install nequip
 
-#install lammps
-1. wget "https://github.com/lammps/lammps/archive/stable.zip"
-2. unzip -q stable.zip
-3. rm stable.zip
-4. mv lammps-stable lammps
-5. wget "https://github.com/mir-group/pair_nequip/archive/main.zip"
-6. unzip -q main.zip
-7. rm main.zip
-8. mv pair_nequip-main pair_nequip
-9. cd pair_nequip && ./patch_lammps.sh ../lammps
-10. pip install mkl mkl-include
-11. cd lammps && mkdir -p build && cd build && cmake ../cmake -DCMAKE_PREFIX_PATH=`python -c 'import torch;print(torch.utils.cmake_prefix_path)'` && make -j4
+Step 3: Get a modified version of LAMMPS (this includes the correct pair_* files to run modified Nequip)
+1. git clone https://github.com/saakethdesai/lammps.git
+2. git checkout -b fast_nequip
 
+Step 4: Get the pair_nequip repository
+1. wget "https://github.com/mir-group/pair_nequip/archive/main.zip"
+2. unzip -q main.zip
+3. rm main.zip
+4. mv pair_nequip-main pair_nequip
+
+Step 5: Install lammps
+1. cd pair_nequip
+2. rm pair_* (remove default pair_* files because we have updated versions in our LAMMPS src directory)
+3. ./patch_lammps.sh ../lammps
+4. pip install mkl mkl-include
+5. cd lammps && mkdir -p build && cd build && cmake ../cmake -DCMAKE_PREFIX_PATH=`python -c 'import torch;print(torch.utils.cmake_prefix_path)'
+6. make -j4
+
+#Check this Jupyter notebook for more details:
+https://colab.research.google.com/drive/1_r348f6oIyKxH4FnpKeD8g4QjwDhP8mT?usp=sharing
+
+#Instructions to run Nequip
+
+1. ./lammps/build/lmp -in in.nequip_multi_model > nequip.out 

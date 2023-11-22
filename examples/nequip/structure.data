@@ -1,9 +1,6 @@
 structure.data (written by ASE) 
 15 	 atoms 
 2  atom types
-#50.0                     150  xlo xhi
-#50.0                     150  ylo yhi
-#50.0                     150  zlo zhi
 0.0                     100  xlo xhi
 0.0                     100  ylo yhi
 0.0                     100  zlo zhi

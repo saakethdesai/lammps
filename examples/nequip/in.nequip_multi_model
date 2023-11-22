@@ -1,0 +1,17 @@
+units	        real
+atom_style      atomic
+newton          off
+thermo          1
+read_data       structure.data
+
+pair_style	    nequip
+pair_coeff	    * * model0deployed.pth model1deployed.pth model2deployed.pth model3deployed.pth model4deployed.pth model5deployed.pth toluene-deployed.pth C H 
+mass            1 15.9994
+mass            2 1.00794
+
+neighbor        1.0 bin
+neigh_modify    delay 5 every 1
+
+fix             f1 all nve
+dump            d1 all custom 1 output_multi.dump id type x y z fx fy fz
+run             100 
